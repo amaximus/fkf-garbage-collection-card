@@ -49,4 +49,4 @@ Card alerting:<br />
 ![Garbage Collection card example](fkf_alerted.png)
 
 Card hiding number of days:<br />
-![Garbage Collection card example](fkf_hide_days_hu.png)
+![Garbage Collection card example](fkf_hide_days.png)
