@@ -34,7 +34,7 @@ Configuration parameters:<br />
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `25px` | size for icons |
 | next_only | **Y** | `false` | display only the first upcoming date |
-| title | **Y** | `` | card title |
+| title | **Y** | `empty string` | card title |
 ---
 
 Please find below an example of ui-lovelace.yaml (entity should be the sensor of garbage_collection platform you defined):
