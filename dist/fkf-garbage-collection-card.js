@@ -5,8 +5,6 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  version() { return "0.1.0"; }
-
   _getAttributes(hass, filter1) {
     var indays = new Array();
     var gday = new Array();
@@ -193,65 +191,22 @@ class FKFGarbageCollectionCard extends HTMLElement {
     const cardConfig = Object.assign({}, config);
     const card = document.createElement('ha-card');
     const content = document.createElement('div');
-    const style = document.createElement('style');
     let icon_size = config.icon_size;
     if (typeof icon_size === "undefined") icon_size="25px"
     let due_color = config.due_color;
     if (typeof due_color === "undefined") due_color="red"
     let due_1_color = config.due_1_color;
     if (typeof due_1_color === "undefined") due_1_color=due_color
+    let title = "";
+    if (typeof config.title != "undefined") title=config.title
+    card.header = title;
 
-    style.textContent = `
-      h2 {
-        text-align: center;
-        padding-top:15px;
-      }
-      table {
-        width: 100%;
-        padding: 0px 0px 0px 0px;
-        border: none;
-        margin-left: 6px;
-        margin-right: 6px;
-      }
-      /*thead th {
-        text-align: left;
-      }
-      tbody tr:nth-child(odd) {
-        background-color: var(--paper-card-background-color);
-        vertical-align: middle;
-      }
-      tbody tr:nth-child(even) {
-        background-color: var(--secondary-background-color);
-      } */
-      td {
-        padding-left: 8px;
-        font-size: 110%;
-      }
-      .tdicon {
-        padding-left: 8px;
-        width: 25px;
-      }
-      .alerted {
-        --iron-icon-fill-color: ${due_color};
-        color: ${due_color};
-      }
-      .alerted_1 {
-        --iron-icon-fill-color: ${due_1_color};
-        color: ${due_1_color};
-      }
-      iron-icon {
-        --iron-icon-height: ${icon_size};
-        --iron-icon-width: ${icon_size};
-      }
-    `;
     content.innerHTML = `
-      <p id='title'>
       <table>
         <tbody id='attributes'>
         </tbody>
       </table>
     `;
-    card.appendChild(style);
     card.appendChild(content);
     root.appendChild(card)
     this._config = cardConfig;
@@ -292,16 +247,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this.style.display = hcard ? "none" : "block";
   }
 
-  _updateTitle(element, title) {
-    element.innerHTML = "<h2>"+ title+"</h2>";
-  }
-
   set hass(hass) {
     const config = this._config;
     const root = this.shadowRoot;
 
-    let title = "";
-    if (typeof config.title != "undefined") title=config.title
     let hide_date = false;
     if (typeof config.hide_date != "undefined") hide_date=config.hide_date
     let hide_wday = false;
@@ -327,15 +276,11 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     this._stateObj = this._config.entity in hass.states ? hass.states[this._config.entity] : null;
 
-    if ( title != "" ) {
-      this._updateTitle(root.getElementById('title'), title);
-    }
-
     this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only);
   }
 
   getCardSize() {
-    return 1;
+    return 3;
   }
 }
 
