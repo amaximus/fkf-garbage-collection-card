@@ -191,6 +191,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     const cardConfig = Object.assign({}, config);
     const card = document.createElement('ha-card');
     const content = document.createElement('div');
+    const style = document.createElement('style');
     let icon_size = config.icon_size;
     if (typeof icon_size === "undefined") icon_size="25px"
     let due_color = config.due_color;
@@ -201,12 +202,35 @@ class FKFGarbageCollectionCard extends HTMLElement {
     if (typeof config.title != "undefined") title=config.title
     card.header = title;
 
+    style.textContent = `
+      table {
+        width: 100%;
+        padding: 0px 0px 0px 0px;
+        border: none;
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+      .alerted {
+        --iron-icon-fill-color: ${due_color};
+        color: ${due_color};
+      }
+      .alerted_1 {
+        --iron-icon-fill-color: ${due_1_color};
+        color: ${due_1_color};
+      }
+      iron-icon {
+        --iron-icon-height: ${icon_size};
+        --iron-icon-width: ${icon_size};
+      }
+    `;
+
     content.innerHTML = `
       <table>
         <tbody id='attributes'>
         </tbody>
       </table>
     `;
+    card.appendChild(style);
     card.appendChild(content);
     root.appendChild(card)
     this._config = cardConfig;
