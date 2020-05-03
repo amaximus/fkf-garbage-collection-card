@@ -13,8 +13,8 @@ class FKFGarbageCollectionCard extends HTMLElement {
     var icon1 = new Array();
     var icon2 = new Array();
     var gcollectionobjarray = [];
-    var station;
     var items;
+    var current;
     var alerted = '';
 
     function _filterName(stateObj, pattern) {
@@ -38,15 +38,16 @@ class FKFGarbageCollectionCard extends HTMLElement {
       return stateObj.search(regEx) === 0;
     }
  
-    var supportedItems = 8;
+    var supportedItems = 5;
     var filters1 = new Array();
     for (var k=0; k < supportedItems; k++) {
-      filters1[k*6+0] = {key: "sensor."+ filter1 + ".day" + k};
-      filters1[k*6+1] = {key: "sensor."+ filter1 + ".date" + k};
-      filters1[k*6+2] = {key: "sensor."+ filter1 + ".garbage" + k};
-      filters1[k*6+3] = {key: "sensor."+ filter1 + ".in" + k};
+      filters1[k*4+0] = {key: "sensor."+ filter1 + ".day" + k};
+      filters1[k*4+1] = {key: "sensor."+ filter1 + ".date" + k};
+      filters1[k*4+2] = {key: "sensor."+ filter1 + ".garbage" + k};
+      filters1[k*4+3] = {key: "sensor."+ filter1 + ".in" + k};
     }
-    filters1[supportedItems*6+1] = {key: "sensor." + filter1 + ".items"};
+    filters1[supportedItems*4+0] = {key: "sensor." + filter1 + ".items"};
+    filters1[supportedItems*4+1] = {key: "sensor." + filter1 + ".current"};
 
     const attributes = new Map();
     filters1.forEach((filter) => {
@@ -138,6 +139,8 @@ class FKFGarbageCollectionCard extends HTMLElement {
         }
       } else if ( newkey == "items") {
         items = attributes.get(key).value;
+      } else if ( newkey == "current") {
+        current = attributes.get(key).value;
       }
     });
 
@@ -160,6 +163,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
             icon1: icon1[i],
             icon2: icon2[i],
             items: items,
+            current: current,
             alerted: alerted
           });
         }
@@ -173,6 +177,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         icon1: '',
         icon2: '',
         items: 0,
+        current: "not_current",
         alerted: ''
       }); 
     }
@@ -204,11 +209,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     style.textContent = `
       table {
-        width: 100%;
-        padding: 0px 0px 0px 0px;
+        width: 95%;
+        padding: 0px;
         border: none;
-        margin-left: 8px;
-        margin-right: 8px;
+        padding-left: 8px;
       }
       .alerted {
         --iron-icon-fill-color: ${due_color};
@@ -217,6 +221,12 @@ class FKFGarbageCollectionCard extends HTMLElement {
       .alerted_1 {
         --iron-icon-fill-color: ${due_1_color};
         color: ${due_1_color};
+      }
+      tbody tr:nth-child(odd) .not_current {
+        background-color: var(--secondary-background-color);
+      }
+      tbody tr:nth-child(even) .not_current {
+        background-color: var(--paper-card-background-color);
       }
       iron-icon {
         --iron-icon-height: ${icon_size};
@@ -241,10 +251,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
       element.innerHTML = `
         ${attributes.map((attribute) => `
           <tr>
-          <td class="tdicon">${attribute.icon1}</td>
-          <td class="tdicon">${attribute.icon2}</td>
-          <td class="${attribute.alerted}">
-              ${hdate === false ? `${attribute.key},&nbsp;` : ''}
+          <td>${attribute.icon1}</td>
+          <td>${attribute.icon2}</td>
+          <td class="${attribute.alerted} ${attribute.current}">
+              ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
               ${hdays === false ? `(${attribute.indays} days)` : ''}
               ${htext === false ? `: ${attribute.garbage}` : ''}
@@ -255,10 +265,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
       element.innerHTML = `
         ${attributes.map((attribute) => `
           <tr>
-          <td class="tdicon">${attribute.icon1}</td>
-          <td class="tdicon">${attribute.icon2}</td>
-          <td class="${attribute.alerted}">
-              ${hdate === false ? `${attribute.key},&nbsp;` : ''}
+          <td>${attribute.icon1}</td>
+          <td>${attribute.icon2}</td>
+          <td class="${attribute.alerted} ${attribute.current}">
+              ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
               ${hdays === false ? `(${attribute.indays} days)` : ''}
               ${htext === false ? `: ${attribute.garbage}` : ''}
