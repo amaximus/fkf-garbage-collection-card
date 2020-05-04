@@ -123,19 +123,13 @@ class FKFGarbageCollectionCard extends HTMLElement {
                   icon1[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
                   icon2[idx]=""
                 } else if (attributes.get(key).value.toLowerCase() == "communal") {
-                  if ( dmode ) {
-                    icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: white;">'
-                  } else {
-                    icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
-                  }
+                  icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
+                             (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
                   icon2[idx]=""
                 }
             } else if (attributes.get(key).value.toLowerCase() == "both") {
-              if ( dmode ) {
-                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: white;">'
-              } else {
-                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
-              }
+              icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
+                         (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
               icon2[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
               garbage[idx]="communal, selective"
               if ( rawFile.status === 200 ) {
@@ -159,14 +153,16 @@ class FKFGarbageCollectionCard extends HTMLElement {
       }
     });
 
+    var ind='';
     if ( items > 0 ) {
       for (var i=0; i < items; i++) {
         if ( gdate[i] ) {
           alerted = '';
-          if ( indays[i] < 2 ) {
+          ind=indays[i].match(/\d+/)
+          if ( ind < 2 ) {
             alerted='alerted_1';
           }
-          if ( indays[i] < 1 ) {
+          if ( ind < 1 ) {
             alerted='alerted';
           }
 
@@ -213,7 +209,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     const content = document.createElement('div');
     const style = document.createElement('style');
     let icon_size = config.icon_size;
-    if (typeof icon_size === "undefined") icon_size="25px"
+    if (typeof icon_size === "undefined") icon_size="22px"
     let due_color = config.due_color;
     if (typeof due_color === "undefined") due_color="red"
     let due_1_color = config.due_1_color;
@@ -231,6 +227,8 @@ class FKFGarbageCollectionCard extends HTMLElement {
       }
       .tdicon {
         width: ${icon_size};
+        padding: 0px;
+        margin: 0px;
       }
       .garbage {
         text-align: right;
@@ -238,21 +236,18 @@ class FKFGarbageCollectionCard extends HTMLElement {
       }
       .day_date {
         text-align: left;
+        padding: -5px;
+        margin-left: 0px;
       }
 
       .alerted {
-        --iron-icon-fill-color: ${due_color};
         color: ${due_color};
       }
       .alerted_1 {
-        --iron-icon-fill-color: ${due_1_color};
         color: ${due_1_color};
       }
-      tbody tr:nth-child(odd) .not_current {
-        background-color: var(--secondary-background-color);
-      }
-      tbody tr:nth-child(even) .not_current {
-        background-color: var(--paper-card-background-color);
+      tbody .not_current {
+        font-style: italic;
       }
       iron-icon {
         --iron-icon-height: ${icon_size};
@@ -278,7 +273,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         ${attributes.map((attribute) => `
           <tr>
           <td class="tdicon">${attribute.icon1}</td>
-          <td>${attribute.icon2}</td>
+          <td class="tdicon">${attribute.icon2}</td>
           <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
@@ -294,7 +289,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         ${attributes.map((attribute) => `
           <tr>
           <td class="tdicon">${attribute.icon1}</td>
-          <td>${attribute.icon2}</td>
+          <td class="tdicon">${attribute.icon2}</td>
           <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
