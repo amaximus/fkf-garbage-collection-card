@@ -5,7 +5,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  _getAttributes(hass, filter1) {
+  _getAttributes(hass, filter1, dmode) {
     var indays = new Array();
     var gday = new Array();
     var gdate = new Array();
@@ -88,7 +88,14 @@ class FKFGarbageCollectionCard extends HTMLElement {
         var name = newkey.slice(0, -1);
         switch (name) {
           case 'in':
-            indays[idx]=attributes.get(key).value;
+            indays[idx]="(" + attributes.get(key).value + " days)";
+            if ( rawFile.status === 200 ) {
+              if ( typeof translationJSONobj != "undefined" ) {
+                if ( typeof translationJSONobj.garbage["days"] != "undefined" ) {
+                  indays[idx] = "(" + attributes.get(key).value + " " + translationJSONobj.garbage["days"] + ")";
+                }
+              }
+            }
             break;
           case 'day':
             gday[idx]=attributes.get(key).value;
@@ -116,11 +123,19 @@ class FKFGarbageCollectionCard extends HTMLElement {
                   icon1[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
                   icon2[idx]=""
                 } else if (attributes.get(key).value.toLowerCase() == "communal") {
-                  icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
+                  if ( dmode ) {
+                    icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: white;">'
+                  } else {
+                    icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
+                  }
                   icon2[idx]=""
                 }
             } else if (attributes.get(key).value.toLowerCase() == "both") {
-              icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
+              if ( dmode ) {
+                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: white;">'
+              } else {
+                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: black;">'
+              }
               icon2[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
               garbage[idx]="communal, selective"
               if ( rawFile.status === 200 ) {
@@ -214,6 +229,17 @@ class FKFGarbageCollectionCard extends HTMLElement {
         border: none;
         padding-left: 8px;
       }
+      .tdicon {
+        width: ${icon_size};
+      }
+      .garbage {
+        text-align: right;
+        margin-right: 12px;
+      }
+      .day_date {
+        text-align: left;
+      }
+
       .alerted {
         --iron-icon-fill-color: ${due_color};
         color: ${due_color};
@@ -251,13 +277,15 @@ class FKFGarbageCollectionCard extends HTMLElement {
       element.innerHTML = `
         ${attributes.map((attribute) => `
           <tr>
-          <td>${attribute.icon1}</td>
+          <td class="tdicon">${attribute.icon1}</td>
           <td>${attribute.icon2}</td>
-          <td class="${attribute.alerted} ${attribute.current}">
+          <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
-              ${hdays === false ? `(${attribute.indays} days)` : ''}
-              ${htext === false ? `: ${attribute.garbage}` : ''}
+              ${hdays === false ? `${attribute.indays}` : ''}
+          </td>
+          <td class="${attribute.alerted} ${attribute.current} garbage">
+              ${htext === false ? `${attribute.garbage}` : ''}
           </td>
          </tr>
       `)[0]}`;
@@ -265,13 +293,15 @@ class FKFGarbageCollectionCard extends HTMLElement {
       element.innerHTML = `
         ${attributes.map((attribute) => `
           <tr>
-          <td>${attribute.icon1}</td>
+          <td class="tdicon">${attribute.icon1}</td>
           <td>${attribute.icon2}</td>
-          <td class="${attribute.alerted} ${attribute.current}">
+          <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
-              ${hdays === false ? `(${attribute.indays} days)` : ''}
-              ${htext === false ? `: ${attribute.garbage}` : ''}
+              ${hdays === false ? `${attribute.indays}` : ''}
+          </td>
+          <td class="${attribute.alerted} ${attribute.current} garbage">
+              ${htext === false ? `${attribute.garbage}` : ''}
           </td>
           </tr>
        `).join('')}
@@ -298,8 +328,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
     let hide_card = false;
     let hide_before = -1;
     if (typeof config.hide_before != "undefined") hide_before=config.hide_before
+    let dark_mode = false;
+    if (typeof config.dark_mode != "undefined") dark_mode=config.dark_mode
 
-    let attributes = this._getAttributes(hass, config.entity.split(".")[1]);
+    let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode);
 
     if (hide_before>-1) {
       let iDays = parseInt(attributes[0].indays,10);

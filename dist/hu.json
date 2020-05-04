@@ -10,6 +10,7 @@
     },
     "garbage": {
         "communal": "kommunális",
-        "selective": "szelektív"
+        "selective": "szelektív",
+        "days": "nap"
     }
 }

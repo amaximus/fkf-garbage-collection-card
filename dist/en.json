@@ -10,6 +10,7 @@
     },
     "garbage": {
         "communal": "communal",
-        "selective": "selective"
+        "selective": "selective",
+        "days": "days"
     }
 }

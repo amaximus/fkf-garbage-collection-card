@@ -6,11 +6,11 @@
 
 This Lovelace custom card displays garbage collection schedule provided by
 the FKF Garbage Collection custom component you may find at
-[https://github.com/amaximus/fkf-garbage-collection](https://github.com/amaximus/fkf-garbage-collection/).<br />
-It will draw your attention the day before the garbage collection by changing the description to red by default.
-When the sensor's last data fetch was unsuccessful, the schedule will be displayed with alternate background color showing data from last successful fetch.
+[https://github.com/amaximus/fkf-garbage-collection](https://github.com/amaximus/fkf-garbage-collection/).  
+It will draw your attention the day before the garbage collection by changing the description to red by default.  
+When the sensor's last data fetch was unsuccessful, the schedule will be displayed with alternate background color showing data from last successful fetch.  
 
-Lovelace UI does not support platform attributes natively.<br />
+Lovelace UI does not support platform attributes natively.  
 Implementation of handling attributes in Lovelace was inspired by [entity-attributes-card](https://github.com/custom-cards/entity-attributes-card).
 
 #### Installation
@@ -26,6 +26,7 @@ Configuration parameters:<br />
 | Name | Optional | `Default` | Description |
 | :---- | :---- | :------- | :----------- |
 | entity | **N** | - | name of the sensor of fkf_garbage_collection platform|
+| dark_mode | **Y** | false | Consider dark mode background when filling icon colors|
 | due_color | **Y** | `red` | description color on due date. Accepts both color names and RGB values |
 | due_1_color | **Y** | due_color | description color on the day before due date. Accepts both color names and RGB values |
 | hide_before | **Y** | `false` | hide entire card until x days before event |
