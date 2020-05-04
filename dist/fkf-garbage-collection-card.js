@@ -224,17 +224,17 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     style.textContent = `
       table {
-        width: 95%;
+        width: 98%;
         padding: 0px;
         border: none;
-        padding-left: 8px;
+        padding-left: 20px;
       }
       .tdicon {
         width: ${icon_size};
       }
       .garbage {
         text-align: right;
-        margin-right: 12px;
+        margin-right: 0px;
       }
       .day_date {
         text-align: left;
