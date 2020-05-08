@@ -8,7 +8,7 @@ This Lovelace custom card displays garbage collection schedule provided by
 the FKF Garbage Collection custom component you may find at
 [https://github.com/amaximus/fkf-garbage-collection](https://github.com/amaximus/fkf-garbage-collection/).  
 It will draw your attention the day before the garbage collection by changing the description to red by default.  
-When the sensor's last data fetch was unsuccessful, the schedule will be displayed with alternate background color showing data from last successful fetch.  
+When the sensor's last data fetch was unsuccessful, the schedule will be displayed in italic showing data from last successful fetch.  
 
 Lovelace UI does not support platform attributes natively.  
 Implementation of handling attributes in Lovelace was inspired by [entity-attributes-card](https://github.com/custom-cards/entity-attributes-card).
@@ -34,8 +34,9 @@ Configuration parameters:<br />
 | hide_days | **Y** | `false` | hide number of days |
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
-| icon_size | **Y** | `25px` | size for icons |
+| icon_size | **Y** | `24px` | size for icons |
 | next_only | **Y** | `false` | display only the first upcoming date |
+| one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed. |
 | title | **Y** | `empty string` | card title |
 ---
 

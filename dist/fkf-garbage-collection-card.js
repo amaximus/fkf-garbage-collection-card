@@ -5,7 +5,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  _getAttributes(hass, filter1, dmode) {
+  _getAttributes(hass, filter1, dmode, oneicon) {
     var indays = new Array();
     var gday = new Array();
     var gdate = new Array();
@@ -128,8 +128,12 @@ class FKFGarbageCollectionCard extends HTMLElement {
                   icon2[idx]=""
                 }
             } else if (attributes.get(key).value.toLowerCase() == "both") {
-              icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
-                         (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
+              if ( oneicon ) {
+                icon1[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
+              } else {
+                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
+                           (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
+              }
               icon2[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
               garbage[idx]="communal, selective"
               if ( rawFile.status === 200 ) {
@@ -209,7 +213,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     const content = document.createElement('div');
     const style = document.createElement('style');
     let icon_size = config.icon_size;
-    if (typeof icon_size === "undefined") icon_size="22px"
+    if (typeof icon_size === "undefined") icon_size="24px"
     let due_color = config.due_color;
     if (typeof due_color === "undefined") due_color="red"
     let due_1_color = config.due_1_color;
@@ -220,10 +224,13 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     style.textContent = `
       table {
-        width: 98%;
+        width: 99%;
         padding: 0px;
         border: none;
-        padding-left: 20px;
+        padding-left: 21px;
+      }
+      th, td {
+        padding: 10px;
       }
       .tdicon {
         width: ${icon_size};
@@ -267,13 +274,13 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this._config = cardConfig;
   }
 
-  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, nonly) {
+  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, nonly, oicon) {
     if ( nonly === true ) {
       element.innerHTML = `
         ${attributes.map((attribute) => `
           <tr>
           <td class="tdicon">${attribute.icon1}</td>
-          <td class="tdicon">${attribute.icon2}</td>
+          ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}`+ '</td>' : ''}
           <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
@@ -289,7 +296,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         ${attributes.map((attribute) => `
           <tr>
           <td class="tdicon">${attribute.icon1}</td>
-          <td class="tdicon">${attribute.icon2}</td>
+          ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}` + '</td>' : ''}
           <td class="${attribute.alerted} ${attribute.current} day_date">
               ${hdate === false ? `${attribute.key}` : ''}
               ${hwday === false ? `${attribute.gday}` : ''}
@@ -325,8 +332,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
     if (typeof config.hide_before != "undefined") hide_before=config.hide_before
     let dark_mode = false;
     if (typeof config.dark_mode != "undefined") dark_mode=config.dark_mode
+    let one_icon = false;
+    if (typeof config.one_icon != "undefined") one_icon=config.one_icon
 
-    let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode);
+    let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode, one_icon);
 
     if (hide_before>-1) {
       let iDays = parseInt(attributes[0].indays,10);
@@ -337,7 +346,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     this._stateObj = this._config.entity in hass.states ? hass.states[this._config.entity] : null;
 
-    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only);
+    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only, one_icon);
   }
 
   getCardSize() {

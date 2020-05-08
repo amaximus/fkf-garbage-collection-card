@@ -34,8 +34,9 @@ Configuration parameters:<br />
 | hide_days | **Y** | `false` | hide number of days |
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
-| icon_size | **Y** | `25px` | size for icons |
+| icon_size | **Y** | `24px` | size for icons |
 | next_only | **Y** | `false` | display only the first upcoming date |
+| one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed. |
 | title | **Y** | `empty string` | card title |
 ---
 
