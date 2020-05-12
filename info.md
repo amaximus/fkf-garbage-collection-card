@@ -15,9 +15,13 @@ Implementation of handling attributes in Lovelace was inspired by [entity-attrib
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://custom-components.github.io/hacs/),
-search for <i>garbage</i> and select FKF Budapest Garbage Collection Card from Plugins.<br />
+search for <i>garbage</i> and select FKF Budapest Garbage Collection Card from Plugins.  
 If you are not using HACS, you may download fkf-garbage-collection-card.js and the translations directory and put them into
-homeassistant_config_dir/www/community/fkf-garbage-collection-card/ directory.<br />
+homeassistant_config_dir/www/community/fkf-garbage-collection-card/ directory.  
+
+Note:
+- next_only configuration parameter will be removed in the near future. Please use 'items_number: 1' instead.
+If defined, until this is removed, it will take precedence over items_number.
 
 #### Lovelace UI configuration
 Configuration parameters:<br />
@@ -35,8 +39,9 @@ Configuration parameters:<br />
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `24px` | size for icons |
+| items_number | **Y** | `5` | number of upcoming collection dates to display |
 | next_only | **Y** | `false` | display only the first upcoming date |
-| one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed. |
+| one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed |
 | title | **Y** | `empty string` | card title |
 ---
 

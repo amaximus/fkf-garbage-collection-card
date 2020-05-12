@@ -274,42 +274,23 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this._config = cardConfig;
   }
 
-  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, nonly, oicon) {
-    if ( nonly === true ) {
-      element.innerHTML = `
-        ${attributes.map((attribute) => `
-          <tr>
-          <td class="tdicon">${attribute.icon1}</td>
-          ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}`+ '</td>' : ''}
-          <td class="${attribute.alerted} ${attribute.current} day_date">
-              ${hdate === false ? `${attribute.key}` : ''}
-              ${hwday === false ? `${attribute.gday}` : ''}
-              ${hdays === false ? `${attribute.indays}` : ''}
-          </td>
-          <td class="${attribute.alerted} ${attribute.current} garbage">
-              ${htext === false ? `${attribute.garbage}` : ''}
-          </td>
-         </tr>
-      `)[0]}`;
-    } else {
-      element.innerHTML = `
-        ${attributes.map((attribute) => `
-          <tr>
-          <td class="tdicon">${attribute.icon1}</td>
-          ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}` + '</td>' : ''}
-          <td class="${attribute.alerted} ${attribute.current} day_date">
-              ${hdate === false ? `${attribute.key}` : ''}
-              ${hwday === false ? `${attribute.gday}` : ''}
-              ${hdays === false ? `${attribute.indays}` : ''}
-          </td>
-          <td class="${attribute.alerted} ${attribute.current} garbage">
-              ${htext === false ? `${attribute.garbage}` : ''}
-          </td>
-          </tr>
-       `).join('')}
-      `;
-    }
-
+  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, nonly, oicon, elnr) {
+    element.innerHTML = `
+      ${attributes.map((attribute) => `
+        <tr>
+        <td class="tdicon">${attribute.icon1}</td>
+        ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}` + '</td>' : ''}
+        <td class="${attribute.alerted} ${attribute.current} day_date">
+            ${hdate === false ? `${attribute.key}` : ''}
+            ${hwday === false ? `${attribute.gday}` : ''}
+            ${hdays === false ? `${attribute.indays}` : ''}
+        </td>
+        <td class="${attribute.alerted} ${attribute.current} garbage">
+            ${htext === false ? `${attribute.garbage}` : ''}
+        </td>
+        </tr>
+     `).slice(0,elnr).join('')}
+    `;
     this.style.display = hcard ? "none" : "block";
   }
 
@@ -325,8 +306,6 @@ class FKFGarbageCollectionCard extends HTMLElement {
     if (typeof config.hide_days != "undefined") hide_days=config.hide_days
     let hide_text = false;
     if (typeof config.hide_text != "undefined") hide_text=config.hide_text
-    let next_only = false;
-    if (typeof config.next_only != "undefined") next_only=config.next_only
     let hide_card = false;
     let hide_before = -1;
     if (typeof config.hide_before != "undefined") hide_before=config.hide_before
@@ -334,6 +313,13 @@ class FKFGarbageCollectionCard extends HTMLElement {
     if (typeof config.dark_mode != "undefined") dark_mode=config.dark_mode
     let one_icon = false;
     if (typeof config.one_icon != "undefined") one_icon=config.one_icon
+    let items_number = 5;
+    if (typeof config.items_number != "undefined") items_number=config.items_number
+    let next_only = false;
+    if (typeof config.next_only != "undefined") next_only=config.next_only
+    if ( next_only ) {
+      items_number = 1
+    }
 
     let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode, one_icon);
 
@@ -346,7 +332,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     this._stateObj = this._config.entity in hass.states ? hass.states[this._config.entity] : null;
 
-    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only, one_icon);
+    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only, one_icon, items_number);
   }
 
   getCardSize() {
