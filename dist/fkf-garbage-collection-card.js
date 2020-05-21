@@ -257,8 +257,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         font-style: italic;
       }
       ha-icon {
-        height: ${icon_size};
-        width: ${icon_size};
+        --mdc-icon-size: ${icon_size};
       }
     `;
 
