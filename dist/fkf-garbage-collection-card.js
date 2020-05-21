@@ -120,21 +120,21 @@ class FKFGarbageCollectionCard extends HTMLElement {
                   }
                 }
                 if (attributes.get(key).value.toLowerCase() == "selective") {
-                  icon1[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
+                  icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
                   icon2[idx]=""
                 } else if (attributes.get(key).value.toLowerCase() == "communal") {
-                  icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
+                  icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: ' +
                              (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
                   icon2[idx]=""
                 }
             } else if (attributes.get(key).value.toLowerCase() == "both") {
               if ( oneicon ) {
-                icon1[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
+                icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
               } else {
-                icon1[idx]='<iron-icon icon="mdi:trash-can-outline" style="--iron-icon-fill-color: ' +
+                icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: ' +
                            (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
               }
-              icon2[idx]='<iron-icon icon="mdi:recycle" style="--iron-icon-fill-color: green;">'
+              icon2[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
               garbage[idx]="communal, selective"
               if ( rawFile.status === 200 ) {
                 if ( typeof translationJSONobj != "undefined" ) {
@@ -256,9 +256,9 @@ class FKFGarbageCollectionCard extends HTMLElement {
       tbody .not_current {
         font-style: italic;
       }
-      iron-icon {
-        --iron-icon-height: ${icon_size};
-        --iron-icon-width: ${icon_size};
+      ha-icon {
+        height: ${icon_size};
+        width: ${icon_size};
       }
     `;
 
