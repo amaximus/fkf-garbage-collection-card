@@ -323,7 +323,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode, one_icon);
 
     if (hide_before>-1) {
-      let iDays = parseInt(attributes[0].indays,10);
+      let iDays = parseInt(attributes[0].indays.match(/\d+/),10);
       if (iDays > hide_before) {
         hide_card = true;
       }
