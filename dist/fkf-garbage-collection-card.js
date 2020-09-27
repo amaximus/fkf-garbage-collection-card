@@ -3,6 +3,17 @@ class FKFGarbageCollectionCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+
+    this.llocale = window.navigator.userLanguage || window.navigator.language;
+    this.translationJSONobj = "undefined";
+    const translationLocal = "/hacsfiles/fkf-garbage-collection-card/" + this.llocale.substring(0,2) + ".json";
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", translationLocal, false);
+    rawFile.send(null);
+    if ( rawFile.status == 200 ) {
+        this.translationJSONobj = JSON.parse(rawFile.responseText);
+    }
   }
 
   _getAttributes(hass, filter1, dmode, oneicon) {
@@ -68,17 +79,6 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     var attr = Array.from(attributes.keys());
 
-    const translationLocal = "/local/community/fkf-garbage-collection-card/" + hass.language + ".json";
-    var rawFile = new XMLHttpRequest();
-   // rawFile.responseType = 'json';
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", translationLocal, false);
-    rawFile.send(null);
-    var translationJSONobj;
-    if ( rawFile.status === 200 ) {
-      translationJSONobj = JSON.parse(rawFile.responseText);
-    }
-
     var re = /\d$/;
     attr.forEach(key => {
       var newkey = key.split('.')[2];
@@ -89,21 +89,17 @@ class FKFGarbageCollectionCard extends HTMLElement {
         switch (name) {
           case 'in':
             indays[idx]="(" + attributes.get(key).value + " days)";
-            if ( rawFile.status === 200 ) {
-              if ( typeof translationJSONobj != "undefined" ) {
-                if ( typeof translationJSONobj.garbage["days"] != "undefined" ) {
-                  indays[idx] = "(" + attributes.get(key).value + " " + translationJSONobj.garbage["days"] + ")";
-                }
+            if ( typeof this.translationJSONobj != "undefined" ) {
+              if ( typeof this.translationJSONobj.garbage["days"] != "undefined" ) {
+                indays[idx] = "(" + attributes.get(key).value + " " + this.translationJSONobj.garbage["days"] + ")";
               }
             }
             break;
           case 'day':
             gday[idx]=attributes.get(key).value;
-            if ( rawFile.status === 200 ) {
-              if ( typeof translationJSONobj != "undefined" ) {
-                if ( typeof translationJSONobj.weekday[gday[idx]] != "undefined" ) {
-                  gday[idx] = translationJSONobj.weekday[attributes.get(key).value];
-                }
+            if ( typeof this.translationJSONobj != "undefined" ) {
+              if ( typeof this.translationJSONobj.weekday[gday[idx]] != "undefined" ) {
+                gday[idx] = this.translationJSONobj.weekday[attributes.get(key).value];
               }
             }
             break;
@@ -112,11 +108,9 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
             if (attributes.get(key).value.toLowerCase() == "selective" || 
                 attributes.get(key).value.toLowerCase() == "communal") {
-                if ( rawFile.status === 200 ) {
-                  if ( typeof translationJSONobj != "undefined" ) {
-                    if (typeof translationJSONobj.garbage[attributes.get(key).value.toLowerCase()] != "undefined") {
-                      garbage[idx]=translationJSONobj.garbage[attributes.get(key).value.toLowerCase()]
-                    }
+                if ( typeof this.translationJSONobj != "undefined" ) {
+                  if (typeof this.translationJSONobj.garbage[attributes.get(key).value.toLowerCase()] != "undefined") {
+                    garbage[idx]=this.translationJSONobj.garbage[attributes.get(key).value.toLowerCase()]
                   }
                 }
                 if (attributes.get(key).value.toLowerCase() == "selective") {
@@ -136,12 +130,10 @@ class FKFGarbageCollectionCard extends HTMLElement {
               }
               icon2[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
               garbage[idx]="communal, selective"
-              if ( rawFile.status === 200 ) {
-                if ( typeof translationJSONobj != "undefined" ) {
-                  if ( typeof translationJSONobj.garbage["communal"] != "undefined" &&
-                       typeof translationJSONobj.garbage["selective"] != "undefined") {
-                    garbage[idx]=translationJSONobj.garbage["communal"] + ", " + translationJSONobj.garbage["selective"]
-                  }
+              if ( typeof this.translationJSONobj != "undefined" ) {
+                if ( typeof this.translationJSONobj.garbage["communal"] != "undefined" &&
+                     typeof this.translationJSONobj.garbage["selective"] != "undefined") {
+                  garbage[idx]=this.translationJSONobj.garbage["communal"] + ", " + this.translationJSONobj.garbage["selective"]
                 }
               }
             }

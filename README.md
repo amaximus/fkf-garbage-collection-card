@@ -57,8 +57,8 @@ resources:
         icon_size: 35px
 ```
 
-Card alerting:<br />
-![Garbage Collection card example](fkf_alerted.png)
+Card with hide_wday=true and items_number=1 in a browser session set to Hungarian locale:<br />
+![Garbage Collection card example](fkf_card1.png)
 
-Card hiding number of days and using translation:<br />
-![Garbage Collection card example](fkf_hide_days.png)
+Card with hide_wday=true and one_icon=true:<br />
+![Garbage Collection card example](fkf_card2.png)
