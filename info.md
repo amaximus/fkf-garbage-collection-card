@@ -19,10 +19,6 @@ search for <i>garbage</i> and select FKF Budapest Garbage Collection Card from P
 If you are not using HACS, you may download fkf-garbage-collection-card.js and the translations directory and put them into
 homeassistant_config_dir/www/community/fkf-garbage-collection-card/ directory.  
 
-Note:
-- next_only configuration parameter will be removed in the near future. Please use 'items_number: 1' instead.
-If defined, until this is removed, it will take precedence over items_number.
-
 #### Lovelace UI configuration
 Configuration parameters:<br />
 
@@ -30,7 +26,6 @@ Configuration parameters:<br />
 | Name | Optional | `Default` | Description |
 | :---- | :---- | :------- | :----------- |
 | entity | **N** | - | name of the sensor of fkf_garbage_collection platform|
-| dark_mode | **Y** | false | Consider dark mode background when filling icon colors|
 | due_color | **Y** | `red` | description color on due date. Accepts both color names and RGB values |
 | due_1_color | **Y** | due_color | description color on the day before due date. Accepts both color names and RGB values |
 | hide_before | **Y** | `false` | hide entire card until x days before event |
@@ -40,7 +35,6 @@ Configuration parameters:<br />
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `24px` | size for icons |
 | items_number | **Y** | `5` | number of upcoming collection dates to display |
-| next_only | **Y** | `false` | display only the first upcoming date |
 | one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed |
 | title | **Y** | `empty string` | card title |
 ---

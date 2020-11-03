@@ -16,7 +16,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     }
   }
 
-  _getAttributes(hass, filter1, dmode, oneicon) {
+  _getAttributes(hass, filter1, oneicon) {
     var indays = new Array();
     var gday = new Array();
     var gdate = new Array();
@@ -117,16 +117,15 @@ class FKFGarbageCollectionCard extends HTMLElement {
                   icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
                   icon2[idx]=""
                 } else if (attributes.get(key).value.toLowerCase() == "communal") {
-                  icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: ' +
-                             (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
+                  icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">'
                   icon2[idx]=""
                 }
             } else if (attributes.get(key).value.toLowerCase() == "both") {
               if ( oneicon ) {
                 icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
               } else {
-                icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: ' +
-                           (dmode ? 'white' : 'var(--paper-item-icon-color)') + ';">'
+                icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">'
+
               }
               icon2[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
               garbage[idx]="communal, selective"
@@ -221,7 +220,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
         border: none;
         padding-left: 21px;
       }
-      th, td {
+      td {
         padding: 10px;
       }
       .tdicon {
@@ -265,7 +264,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     this._config = cardConfig;
   }
 
-  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, nonly, oicon, elnr) {
+  _updateContent(element, attributes, hdate, hwday, hdays, htext, hcard, oicon, elnr) {
     element.innerHTML = `
       ${attributes.map((attribute) => `
         <tr>
@@ -300,19 +299,12 @@ class FKFGarbageCollectionCard extends HTMLElement {
     let hide_card = false;
     let hide_before = -1;
     if (typeof config.hide_before != "undefined") hide_before=config.hide_before
-    let dark_mode = false;
-    if (typeof config.dark_mode != "undefined") dark_mode=config.dark_mode
     let one_icon = false;
     if (typeof config.one_icon != "undefined") one_icon=config.one_icon
     let items_number = 5;
     if (typeof config.items_number != "undefined") items_number=config.items_number
-    let next_only = false;
-    if (typeof config.next_only != "undefined") next_only=config.next_only
-    if ( next_only ) {
-      items_number = 1
-    }
 
-    let attributes = this._getAttributes(hass, config.entity.split(".")[1], dark_mode, one_icon);
+    let attributes = this._getAttributes(hass, config.entity.split(".")[1], one_icon);
 
     if (hide_before>-1) {
       let iDays = parseInt(attributes[0].indays.match(/\d+/),10);
@@ -323,7 +315,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
 
     this._stateObj = this._config.entity in hass.states ? hass.states[this._config.entity] : null;
 
-    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, next_only, one_icon, items_number);
+    this._updateContent(root.getElementById('attributes'), attributes, hide_date, hide_wday, hide_days, hide_text, hide_card, one_icon, items_number);
   }
 
   getCardSize() {
