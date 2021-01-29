@@ -45,7 +45,7 @@ Please find below an example of ui-lovelace.yaml (entity should be the sensor of
 
 ```
 resources:
-  - {type: js, url: '/local/community/fkf-garbage-collection-card/fkf-garbage-collection-card.js'}
+  - {type: js, url: '/hacsfiles/fkf-garbage-collection-card/fkf-garbage-collection-card.js'}
     cards:
       - type: custom:fkf-garbage-collection-card
         entity: sensor.my_garbage_schedule
