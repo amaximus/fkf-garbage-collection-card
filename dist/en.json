@@ -10,6 +10,7 @@
     },
     "garbage": {
         "communal": "communal",
+        "green": "green",
         "selective": "selective",
         "days": "days"
     }

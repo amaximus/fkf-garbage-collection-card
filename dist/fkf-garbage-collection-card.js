@@ -23,10 +23,14 @@ class FKFGarbageCollectionCard extends HTMLElement {
     var garbage = new Array();
     var icon1 = new Array();
     var icon2 = new Array();
+    var icon3 = new Array();
     var gcollectionobjarray = [];
     var items;
     var current;
     var alerted = '';
+    const icon = { "communal": '<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">',
+                   "green": '<ha-icon icon="mdi:leaf" style="color: green;">',
+                   "selective": '<ha-icon icon="mdi:recycle" style="color: green;">'}
 
     function _filterName(stateObj, pattern) {
       let parts;
@@ -48,7 +52,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
       const regEx = new RegExp(`^${attribute.replace(/\*/g, '.*')}$`, 'i');
       return stateObj.search(regEx) === 0;
     }
- 
+
     var supportedItems = 5;
     var filters1 = new Array();
     for (var k=0; k < supportedItems; k++) {
@@ -72,7 +76,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
             attributes.set(`${key}.${attr_key}`, {
               value: `${hass.states[key].attributes[attr_key]} ${filter.unit||''}`.trim(),
             });
-          }  
+          }
         });
       });
     });
@@ -104,36 +108,49 @@ class FKFGarbageCollectionCard extends HTMLElement {
             }
             break;
           case 'garbage':
-            garbage[idx]=attributes.get(key).value.toLowerCase();
+            garbage[idx] = attributes.get(key).value.toLowerCase();
 
-            if (attributes.get(key).value.toLowerCase() == "selective" || 
-                attributes.get(key).value.toLowerCase() == "communal") {
-                if ( typeof this.translationJSONobj != "undefined" ) {
-                  if (typeof this.translationJSONobj.garbage[attributes.get(key).value.toLowerCase()] != "undefined") {
-                    garbage[idx]=this.translationJSONobj.garbage[attributes.get(key).value.toLowerCase()]
-                  }
-                }
-                if (attributes.get(key).value.toLowerCase() == "selective") {
-                  icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
-                  icon2[idx]=""
-                } else if (attributes.get(key).value.toLowerCase() == "communal") {
-                  icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">'
-                  icon2[idx]=""
-                }
-            } else if (attributes.get(key).value.toLowerCase() == "both") {
-              if ( oneicon ) {
-                icon1[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
-              } else {
-                icon1[idx]='<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">'
-
+            icon1[idx]=""
+            icon2[idx]=""
+            icon3[idx]=""
+            var res = attributes.get(key).value.toLowerCase().split("_");
+            if ( oneicon ) {
+              let icontype = ""
+              if ( res.indexOf("green") >= 0 ) {
+                icontype = "green"
+              } else if ( res.indexOf("selective") >= 0 ) {
+                icontype = "selective"
+              } else if ( res.indexOf("communal") >= 0 ) {
+                icontype = "communal"
               }
-              icon2[idx]='<ha-icon icon="mdi:recycle" style="color: green;">'
-              garbage[idx]="communal, selective"
+              icon1[idx]=icon[icontype]
               if ( typeof this.translationJSONobj != "undefined" ) {
-                if ( typeof this.translationJSONobj.garbage["communal"] != "undefined" &&
-                     typeof this.translationJSONobj.garbage["selective"] != "undefined") {
-                  garbage[idx]=this.translationJSONobj.garbage["communal"] + ", " + this.translationJSONobj.garbage["selective"]
+                if ( typeof this.translationJSONobj.garbage[icontype] != "undefined" ) {
+                  garbage[idx] = this.translationJSONobj.garbage[icontype]
                 }
+              }
+            } else {
+              var i = 0;
+              let garbagestr = ""
+              for (const value of res) {
+                if ( i % 3 === 0 ) {
+                  icon1[idx]=icon[value]
+                } else if ( i % 3 === 1 ) {
+                  icon2[idx]=icon[value]
+                } else if ( i % 3 === 2 ) {
+                  icon3[idx]=icon[value]
+                }
+                if ( typeof this.translationJSONobj != "undefined" ) {
+                  if ( typeof this.translationJSONobj.garbage[value] != "undefined" ) {
+                    garbagestr += this.translationJSONobj.garbage[value] + ", "
+                  }
+                } else {
+                  garbagestr = garbage[idx] + ", "
+                }
+                i+=1;
+              }
+              if ( garbagestr.length > 2 ) {
+                garbage[idx] = garbagestr.slice(0, -2);
               }
             }
             break;
@@ -168,6 +185,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
             gday: gday[i],
             icon1: icon1[i],
             icon2: icon2[i],
+            icon3: icon3[i],
             items: items,
             current: current,
             alerted: alerted
@@ -182,10 +200,11 @@ class FKFGarbageCollectionCard extends HTMLElement {
         gday: '',
         icon1: '',
         icon2: '',
+        icon3: '',
         items: 0,
         current: "not_current",
         alerted: ''
-      }); 
+      });
     }
     return Array.from(gcollectionobjarray.values());
   }
@@ -269,7 +288,8 @@ class FKFGarbageCollectionCard extends HTMLElement {
       ${attributes.map((attribute) => `
         <tr>
         <td class="tdicon">${attribute.icon1}</td>
-        ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}` + '</td>' : ''}
+        ${oicon === false ? '<td class="tdicon">' + `${attribute.icon2}` + '</td>' +
+                            '<td class="tdicon">' + `${attribute.icon3}` + '</td>' : ''}
         <td class="${attribute.alerted} ${attribute.current} day_date">
             ${hdate === false ? `${attribute.key}` : ''}
             ${hwday === false ? `${attribute.gday}` : ''}
