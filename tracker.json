@@ -1,8 +1,8 @@
 {
   "garbage-collection-card": {
-    "version": "0.7.0",
-    "updated_at": "2020-11-03",
+    "version": "0.8.0",
+    "updated_at": "2021-02-27",
     "visit_repo": "https://github.com/amaximus/fkf-garbage-collection-card",
-    "changelog": "https://github.com/amaximus/ffk-garbage-collection-card/releases/0.7.0"
+    "changelog": "https://github.com/amaximus/ffk-garbage-collection-card/releases/0.8.0"
   }
 }
