@@ -53,6 +53,15 @@ resources:
         icon_size: 35px
 ```
 
+Alternatively, you may go to Dashboard -> Edit Dashboard -> + Add card -> Manual and copy paste the following:
+
+```
+type: custom:fkf-garbage-collection-card
+entity: sensor.my_garbage_schedule
+title: 'My garbage schedule'
+icon_size: 35px
+```
+
 Card with hide_wday=true and items_number=1 in a browser session set to Hungarian locale:<br />
 ![Garbage Collection card example](fkf_card1.png)
 
