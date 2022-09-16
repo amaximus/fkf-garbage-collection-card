@@ -3,17 +3,6 @@ class FKFGarbageCollectionCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-
-    this.llocale = window.navigator.userLanguage || window.navigator.language;
-    this.translationJSONobj = "undefined";
-    const translationLocal = "/hacsfiles/fkf-garbage-collection-card/" + this.llocale.substring(0,2) + ".json";
-    var rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", translationLocal, false);
-    rawFile.send(null);
-    if ( rawFile.status == 200 ) {
-        this.translationJSONobj = JSON.parse(rawFile.responseText);
-    }
   }
 
   _getAttributes(hass, filter1, oneicon) {
@@ -231,6 +220,20 @@ class FKFGarbageCollectionCard extends HTMLElement {
     let title = "";
     if (typeof config.title != "undefined") title=config.title
     card.header = title;
+
+    let install_path = "/hacsfiles/fkf-garbage-collection-card/"
+    if (typeof config.install_path != "undefined") install_path=config.install_path
+
+    this.llocale = window.navigator.userLanguage || window.navigator.language;
+    this.translationJSONobj = "undefined";
+    const translationLocal = install_path + this.llocale.substring(0,2) + ".json";
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", translationLocal, false);
+    rawFile.send(null);
+    if ( rawFile.status == 200 ) {
+        this.translationJSONobj = JSON.parse(rawFile.responseText);
+    }
 
     style.textContent = `
       table {
