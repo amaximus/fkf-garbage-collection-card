@@ -16,8 +16,8 @@ Implementation of handling attributes in Lovelace was inspired by [entity-attrib
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/frontend),
 search for <i>garbage</i> and select FKF Budapest Garbage Collection Card from Plugins.  
-If you are not using HACS, you may download fkf-garbage-collection-card.js and the translations directory and put them into
-homeassistant_config_dir/www/community/fkf-garbage-collection-card/ directory.  
+If you are not using HACS, you may download fkf-garbage-collection-card.js and the translations directory and put them into a directory under
+homeassistant_config_dir/www/ directory (see `install_path` parameter below).  
 
 #### Lovelace UI configuration
 Configuration parameters:<br />
@@ -34,7 +34,7 @@ Configuration parameters:<br />
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `24px` | size for icons |
-| install_path | **Y** | `/hacsfiles/fkf-garbage-collection-card` | local installation path. Defaults to HACS path.<BR>E.g. installed manually under /www in a dedicated directory would require: `/local/fkf-garbage-collection-card` |
+| install_path | **Y** | `/hacsfiles/fkf-garbage-collection-card/` | local installation path. Defaults to HACS path.<BR>E.g. installed manually under /www in a dedicated directory would require: `/local/fkf-garbage-collection-card/` |
 | items_number | **Y** | `5` | number of upcoming collection dates to display |
 | one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed |
 | title | **Y** | `empty string` | card title |
