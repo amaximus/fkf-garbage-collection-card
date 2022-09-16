@@ -1,4 +1,4 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 
 <p><a href="https://www.buymeacoffee.com/6rF5cQl" rel="nofollow" target="_blank"><img src="https://camo.githubusercontent.com/c070316e7fb193354999ef4c93df4bd8e21522fa/68747470733a2f2f696d672e736869656c64732e696f2f7374617469632f76312e7376673f6c6162656c3d4275792532306d6525323061253230636f66666565266d6573736167653d25463025394625413525413826636f6c6f723d626c61636b266c6f676f3d6275792532306d6525323061253230636f66666565266c6f676f436f6c6f723d7768697465266c6162656c436f6c6f723d366634653337" alt="Buy me a coffee" data-canonical-src="https://img.shields.io/static/v1.svg?label=Buy%20me%20a%20coffee&amp;message=%F0%9F%A5%A8&amp;color=black&amp;logo=buy%20me%20a%20coffee&amp;logoColor=white&amp;labelColor=b0c4de" style="max-width:100%;"></a></p>
 
@@ -34,6 +34,7 @@ Configuration parameters:<br />
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `24px` | size for icons |
+| install_path | **Y** | `/hacsfiles/fkf-garbage-collection-card` | local installation path. Defaults to HACS path.<BR>E.g. installed manually under /www in a dedicated directory would require: `/local/fkf-garbage-collection-card` |
 | items_number | **Y** | `5` | number of upcoming collection dates to display |
 | one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed |
 | title | **Y** | `empty string` | card title |
@@ -49,6 +50,15 @@ resources:
         entity: sensor.my_garbage_schedule
         title: 'My garbage schedule'
         icon_size: 35px
+```
+
+Alternatively, you may go to Dashboard -> Edit Dashboard -> + Add card -> Manual and copy paste the following:
+
+```
+type: custom:fkf-garbage-collection-card
+entity: sensor.my_garbage_schedule
+title: 'My garbage schedule'
+icon_size: 35px
 ```
 
 Card with hide_wday=true and items_number=1 in a browser session set to Hungarian locale:<br />

@@ -34,6 +34,7 @@ Configuration parameters:<br />
 | hide_text | **Y** | `false` | hide description |
 | hide_wday | **Y** | `false` | hide weekday |
 | icon_size | **Y** | `24px` | size for icons |
+| install_path | **Y** | `/hacsfiles/fkf-garbage-collection-card` | local installation path. Defaults to HACS path.<BR>E.g. installed manually under /www in a dedicated directory would require: `/local/fkf-garbage-collection-card` |
 | items_number | **Y** | `5` | number of upcoming collection dates to display |
 | one_icon | **Y** | `false` | display only one icon. When both communal and recycle garbage are to be collected, recycle icon will be displayed |
 | title | **Y** | `empty string` | card title |
