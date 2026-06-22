@@ -19,6 +19,7 @@ class FKFGarbageCollectionCard extends HTMLElement {
     var alerted = '';
     const icon = { "communal": '<ha-icon icon="mdi:trash-can-outline" style="color: var(--paper-item-icon-color);">',
                    "green": '<ha-icon icon="mdi:leaf" style="color: green;">',
+                   "bio": '<ha-icon icon="mdi:fruit-watermelon" style="color: green;">',
                    "selective": '<ha-icon icon="mdi:recycle" style="color: green;">'}
 
     function _filterName(stateObj, pattern) {
@@ -111,6 +112,8 @@ class FKFGarbageCollectionCard extends HTMLElement {
                 icontype = "selective"
               } else if ( res.indexOf("communal") >= 0 ) {
                 icontype = "communal"
+              } else if ( res.indexOf("bio") >= 0 ) {
+                icontype = "bio"
               }
               icon1[idx]=icon[icontype]
               if ( typeof this.translationJSONobj != "undefined" ) {
